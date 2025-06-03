@@ -1,0 +1,10 @@
+credentials:
+  usernames:
+    sawa:
+      email: sawa@example.com
+      name: Sawa
+      password: '$2b$12$B6GMSVp6u/tUuHIZHhhWm.yzHZ1B6V7Bsjh7CU1FHR8mg7Hn2ChJO'  # password: p123
+
+cookie:
+  expiry_days: 30
+  key: 'some_cookie_secret_key123' 

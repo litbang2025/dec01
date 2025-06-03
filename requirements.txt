@@ -1,0 +1,6 @@
+streamlit
+pandas
+openpyxl
+pycryptodome
+streamlit-option-menu
+
