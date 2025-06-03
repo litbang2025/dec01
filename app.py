@@ -11,7 +11,9 @@ from streamlit_option_menu import option_menu
 # --- Fungsi Enkripsi dan Dekripsi AES ---
 def aes_encrypt(data, key):
     cipher = AES.new(key, AES.MODE_CBC)
-    ct_bytes = cipher.encrypt(pad(data, AES.block_size))
+    # Tambahkan padding
+    padded_data = pad(data, AES.block_size)
+    ct_bytes = cipher.encrypt(padded_data)
     iv = base64.b64encode(cipher.iv).decode('utf-8')
     ct = base64.b64encode(ct_bytes).decode('utf-8')
     return iv + ct
@@ -121,7 +123,8 @@ if st.session_state.get('logged_in', False):
                 if algorithm == "AES":
                     encrypted_data = aes_encrypt(data, key)
                 elif algorithm == "DES":
-                    encrypted_data = des_encrypt(data, key)
+                    # Implementasikan enkripsi DES jika diperlukan
+                    pass  # Ganti dengan fungsi enkripsi DES yang sesuai
 
                 # Simpan file terenkripsi dalam memori
                 encrypted_buffer = io.BytesIO(encrypted_data.encode())
@@ -135,7 +138,8 @@ if st.session_state.get('logged_in', False):
                     if algorithm == "AES":
                         decrypted_data = aes_decrypt(data.decode('utf-8'), key)
                     elif algorithm == "DES":
-                        decrypted_data = des_decrypt(data.decode('utf-8'), key)
+                        # Implementasikan dekripsi DES jika diperlukan
+                        pass  # Ganti dengan fungsi dekripsi DES yang sesuai
 
                     # Simpan file terdekripsi dalam memori
                     decrypted_buffer = io.BytesIO(decrypted_data)
