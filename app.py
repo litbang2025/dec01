@@ -1,5 +1,5 @@
-import streamlit as st  # Harus diimpor dulu
-import pandas as pd
+import streamlit as st
+import pandas as pd  # Impor pandas untuk fungsi login
 import random
 import string
 import base64
@@ -7,13 +7,6 @@ from Crypto.Cipher import AES, DES
 from Crypto.Util.Padding import pad, unpad
 import io
 from streamlit_option_menu import option_menu
-
-# 🛑 LETAKKAN INI SEGERA SETELAH import
-st.set_page_config(
-    page_title="🔐 File Encryption Web App",
-    page_icon="🔒",
-    layout="wide"
-)
 
 
 # --- Fungsi Enkripsi dan Dekripsi AES ---
@@ -48,6 +41,7 @@ def login(user, password):
     return False
 
 # --- UI Utama ---
+st.set_page_config(page_title="🔐 File Encryption Web App", page_icon="🔒", layout="wide")
 
 # Sidebar menu menggunakan streamlit_option_menu
 with st.sidebar:
