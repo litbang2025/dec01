@@ -8,7 +8,7 @@ from Crypto.Util.Padding import pad, unpad
 import io
 from streamlit_option_menu import option_menu
 
-st.markdown(hide_github_icon, unsafe_allow_html=True)
+st.markdown(hide_github_icon, unsafe_allow_html=False)
 # --- Fungsi Enkripsi dan Dekripsi AES ---
 def aes_encrypt(data, key):
     cipher = AES.new(key, AES.MODE_CBC)
