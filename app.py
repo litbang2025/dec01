@@ -1,5 +1,5 @@
 import streamlit as st
-import pandas as pd
+import pandas as pd  # Impor pandas untuk fungsi login
 import random
 import string
 import base64
@@ -7,8 +7,7 @@ from Crypto.Cipher import AES, DES
 from Crypto.Util.Padding import pad, unpad
 import io
 from streamlit_option_menu import option_menu
-
-# --- Sembunyikan ikon GitHub (Opsional, jika menu_items sudah dipakai) ---
+# Sembunyikan ikon GitHub di kanan atas
 hide_github_icon = """
     <style>
     [data-testid="stDecoration"] {
@@ -17,19 +16,6 @@ hide_github_icon = """
     </style>
 """
 st.markdown(hide_github_icon, unsafe_allow_html=True)
-
-# --- Konfigurasi halaman (Ini yang paling penting untuk menghilangkan GitHub di kanan atas) ---
-st.set_page_config(
-    page_title="🔐 File Encryption Web App",
-    page_icon="🔒",
-    layout="wide",
-    menu_items={
-        "Get Help": None,
-        "Report a Bug": None,
-        "About": None
-    }
-)
-
 # --- Fungsi Enkripsi dan Dekripsi AES ---
 def aes_encrypt(data, key):
     cipher = AES.new(key, AES.MODE_CBC)
@@ -62,7 +48,7 @@ def login(user, password):
     return False
 
 # --- UI Utama ---
-
+st.set_page_config(page_title="🔐 File Encryption Web App", page_icon="🔒", layout="wide")
 
 # Sidebar menu menggunakan streamlit_option_menu
 with st.sidebar:
