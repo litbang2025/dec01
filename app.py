@@ -1,4 +1,5 @@
 import streamlit as st
+st.set_page_config(page_title="🔐 File Encryption Web App", page_icon="🔒", layout="wide")  # <-- HARUS PALING AWAL
 import pandas as pd  # Impor pandas untuk fungsi login
 import random
 import string
