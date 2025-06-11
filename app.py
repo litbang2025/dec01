@@ -1,26 +1,5 @@
-import streamlit as st
-# Sembunyikan ikon GitHub di pojok kanan atas
-hide_github_icon = """
-    <style>
-    [data-testid="stDecoration"] {
-        display: none;
-    }
-    </style>
-"""
-st.markdown(hide_github_icon, unsafe_allow_html=True)
-
-# Konfigurasi halaman
-st.set_page_config(
-    page_title="🔐 File Encryption Web App",
-    page_icon="🔒",
-    layout="wide",
-    menu_items={
-        "Get Help": None,
-        "Report a Bug": None,
-        "About": None
-    }
-)
-import pandas as pd  # Impor pandas untuk fungsi login
+import streamlit as st  # Harus diimpor dulu
+import pandas as pd
 import random
 import string
 import base64
@@ -29,6 +8,12 @@ from Crypto.Util.Padding import pad, unpad
 import io
 from streamlit_option_menu import option_menu
 
+# 🛑 LETAKKAN INI SEGERA SETELAH import
+st.set_page_config(
+    page_title="🔐 File Encryption Web App",
+    page_icon="🔒",
+    layout="wide"
+)
 
 
 # --- Fungsi Enkripsi dan Dekripsi AES ---
