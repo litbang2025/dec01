@@ -50,7 +50,6 @@ st.set_page_config(
         "Report a Bug": None,
         "About": None
     }
-)
 
 
 # Sidebar menu menggunakan streamlit_option_menu
