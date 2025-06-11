@@ -14,7 +14,6 @@ hide_github_icon = """
         display: none;
     }
     </style>
-"""
 st.markdown(hide_github_icon, unsafe_allow_html=True)
 # --- Fungsi Enkripsi dan Dekripsi AES ---
 def aes_encrypt(data, key):
