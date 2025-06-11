@@ -8,38 +8,11 @@ from Crypto.Util.Padding import pad, unpad
 import io
 from streamlit_option_menu import option_menu
 
-# -------------------------------
-# KONFIGURASI & STYLING
-# -------------------------------
 
-# Sembunyikan ikon GitHub di pojok kanan atas
-hide_github_icon = """
-    <style>
-    [data-testid="stDecoration"] {
-        display: none;
-    }
-    </style>
-"""
-st.markdown(hide_github_icon, unsafe_allow_html=True)
-
-# Konfigurasi halaman
-st.set_page_config(
-    page_title="🔐 File Encryption Web App",
-    page_icon="🔒",
-    layout="wide",
-    menu_items={
-        "Get Help": None,
-        "Report a Bug": None,
-        "About": None
-    }
-)
-
-# -------------------------------
-# FUNGSI
-# -------------------------------
-
+# --- Fungsi Enkripsi dan Dekripsi AES ---
 def aes_encrypt(data, key):
     cipher = AES.new(key, AES.MODE_CBC)
+    # Tambahkan padding
     padded_data = pad(data, AES.block_size)
     ct_bytes = cipher.encrypt(padded_data)
     iv = base64.b64encode(cipher.iv).decode('utf-8')
@@ -53,21 +26,26 @@ def aes_decrypt(data, key):
     pt = unpad(cipher.decrypt(ct), AES.block_size)
     return pt
 
+# --- Fungsi untuk Menghasilkan Kunci Alfanumerik ---
 def generate_key(length):
     characters = string.ascii_letters + string.digits
     return ''.join(random.choice(characters) for _ in range(length))
 
+# --- Fungsi Login ---
 def login(user, password):
     df = pd.read_excel("credentials.xlsx", header=None)
     users = df.iloc[1:, 0].tolist()
     passwords = df.iloc[1:, 1].tolist()
-    return user in users and passwords[users.index(user)] == password
+    if user in users and passwords[users.index(user)] == password:
+        return True
+    return False
 
-# -------------------------------
-# SIDEBAR NAVIGASI
-# -------------------------------
+# --- UI Utama ---
+st.set_page_config(page_title="🔐 File Encryption Web App", page_icon="🔒", layout="wide")
 
+# Sidebar menu menggunakan streamlit_option_menu
 with st.sidebar:
+    # Memusatkan logo dan judul
     st.markdown("""
         <div style='text-align: center;'>
             <h1>Aplikasi Enkripsi File</h1>
@@ -80,10 +58,7 @@ with st.sidebar:
                            icons=['person', 'house', 'lock', 'info-circle'],
                            menu_icon="cast", default_index=0)
 
-# -------------------------------
-# KONTEN HALAMAN
-# -------------------------------
-
+# Konten berdasarkan menu yang dipilih
 if selected == "Login":
     st.title("Login")
     username = st.text_input("Username")
@@ -100,7 +75,7 @@ elif selected == "Home":
     if not st.session_state.get('logged_in', False):
         st.warning("Silakan login terlebih dahulu.")
     else:
-        st.title("🔐 Enkripsi File by Litbang IHBS")
+        st.title("🔐 Enkripsi File bY lITBANG IHBS")
         st.markdown("<h5 style='text-align: center; color: gray;'>Lindungi data Anda dengan enkripsi yang kuat</h5>", unsafe_allow_html=True)
 
 elif selected == "Fitur Utama":
@@ -124,10 +99,7 @@ elif selected == "Tentang":
         Anda dapat melindungi data sensitif Anda dari akses yang tidak sah.
         """)
 
-# -------------------------------
-# FITUR ENKRIPSI & DEKRIPSI
-# -------------------------------
-
+# Input untuk enkripsi dan dekripsi
 if st.session_state.get('logged_in', False):
     st.header("Proses Enkripsi dan Dekripsi")
     algorithm = st.selectbox("Pilih algoritma enkripsi:", ["AES", "DES"])
@@ -136,12 +108,14 @@ if st.session_state.get('logged_in', False):
     key_input = st.text_input("Masukkan kunci (16 karakter untuk AES, 8 karakter untuk DES)", max_chars=16)
 
     if st.button("Generate Key"):
-        length = 16 if algorithm == "AES" else 8
-        generated_key = generate_key(length)
+        if algorithm == "AES":
+            generated_key = generate_key(16)
+        elif algorithm == "DES":
+            generated_key = generate_key(8)
         st.success(f"Kunci yang dihasilkan: {generated_key}")
         key_input = generated_key
 
-    if uploaded_file and len(key_input) == (16 if algorithm == "AES" else 8):
+    if uploaded_file and (len(key_input) == 16 if algorithm == "AES" else len(key_input) == 8):
         key = key_input.encode()
         data = uploaded_file.read()
 
@@ -150,9 +124,12 @@ if st.session_state.get('logged_in', False):
                 if algorithm == "AES":
                     encrypted_data = aes_encrypt(data, key)
                 elif algorithm == "DES":
-                    # Tambahkan fungsi enkripsi DES jika tersedia
-                    encrypted_data = ""  # Placeholder
+                    # Implementasikan enkripsi DES jika diperlukan
+                    pass  # Ganti dengan fungsi enkripsi DES yang sesuai
+
+                # Simpan file terenkripsi dalam memori
                 encrypted_buffer = io.BytesIO(encrypted_data.encode())
+
                 st.success("✅ File berhasil dienkripsi.")
                 st.download_button("⬇️ Download Encrypted File", encrypted_buffer, file_name=f"encrypted_{uploaded_file.name}.enc")
 
@@ -162,8 +139,12 @@ if st.session_state.get('logged_in', False):
                     if algorithm == "AES":
                         decrypted_data = aes_decrypt(data.decode('utf-8'), key)
                     elif algorithm == "DES":
-                        decrypted_data = b""  # Placeholder
+                        # Implementasikan dekripsi DES jika diperlukan
+                        pass  # Ganti dengan fungsi dekripsi DES yang sesuai
+
+                    # Simpan file terdekripsi dalam memori
                     decrypted_buffer = io.BytesIO(decrypted_data)
+
                     st.success("✅ File berhasil didekripsi.")
                     st.download_button("⬇️ Download Decrypted File", decrypted_buffer, file_name=uploaded_file.name.replace(".enc", ""))
                 except Exception as e:
@@ -171,9 +152,6 @@ if st.session_state.get('logged_in', False):
     else:
         st.info("📝 Silakan upload file dan masukkan kunci yang sesuai.")
 
-# -------------------------------
-# FOOTER
-# -------------------------------
-
+# Footer
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center;'>© 2025 File Encryption By Litbang. All rights reserved.</p>", unsafe_allow_html=True)
