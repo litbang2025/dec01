@@ -1,14 +1,4 @@
 import streamlit as st
-st.set_page_config(page_title="🔐 File Encryption Web App", page_icon="🔒", layout="wide")  # <-- HARUS PALING AWAL
-import pandas as pd  # Impor pandas untuk fungsi login
-import random
-import string
-import base64
-from Crypto.Cipher import AES, DES
-from Crypto.Util.Padding import pad, unpad
-import io
-from streamlit_option_menu import option_menu
-
 # Sembunyikan ikon GitHub di pojok kanan atas
 hide_github_icon = """
     <style>
@@ -30,6 +20,16 @@ st.set_page_config(
         "About": None
     }
 )
+import pandas as pd  # Impor pandas untuk fungsi login
+import random
+import string
+import base64
+from Crypto.Cipher import AES, DES
+from Crypto.Util.Padding import pad, unpad
+import io
+from streamlit_option_menu import option_menu
+
+
 
 # --- Fungsi Enkripsi dan Dekripsi AES ---
 def aes_encrypt(data, key):
