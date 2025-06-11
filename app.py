@@ -7,7 +7,15 @@ from Crypto.Cipher import AES, DES
 from Crypto.Util.Padding import pad, unpad
 import io
 from streamlit_option_menu import option_menu
-
+# Sembunyikan ikon GitHub di kanan atas
+hide_github_icon = """
+    <style>
+    [data-testid="stDecoration"] {
+        display: none;
+    }
+    </style>
+"""
+st.markdown(hide_github_icon, unsafe_allow_html=True)
 # --- Fungsi Enkripsi dan Dekripsi AES ---
 def aes_encrypt(data, key):
     cipher = AES.new(key, AES.MODE_CBC)
